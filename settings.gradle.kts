@@ -5,7 +5,7 @@ rootProject.name = "reactive-kotlinx-workshop"
 
 include("exercises:1")
 include("exercises:1A")
-//include("exercises:1B")
+include("exercises:1B")
 
 val logbackVersion: String = "1.4.14"
 val exposedVersion: String = "0.47.0"
