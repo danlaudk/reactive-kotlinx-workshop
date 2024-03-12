@@ -1,24 +1,14 @@
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
+val flow = flowOf(1,2,3,4)
 
-fun <T> compress(list: List<T>): T {
-    return list.fold(list.first()) { acc, element ->
-        TODO("Not implemented yet")
-    }
-}
-
-fun main() {
-    println("Hello world!")
-
-    val li = listOf('a','a','a','a','b','c','c','a','a','d','e','e','e','e')
-    println(compress(li))
-    /*
-
-If a list contains repeated elements they should be replaced with a single copy of the element. The order of the elements should not be changed.
-Use fold
-
-Example :
-compress "aaaabccaadeeee"
-"abcade"
-     */
+suspend fun main() {
+    flowOf("A","B","C","D","E")
+        .onEach { println(" emits: $it") }
+        .collect {
+            println(" collects: $it")
+            delay(1000)
+        }
 
 }
