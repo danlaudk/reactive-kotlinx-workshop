@@ -18,3 +18,13 @@ fun lines(path: Path, skipWhitespace: Boolean = false) = flow {
         }
     }
 }.flowOn(Dispatchers.IO)
+
+fun linesSeq(path: Path, skipWhitespace: Boolean = false) = sequence<String> {
+    path.useLines { lines ->
+        lines.forEach { line ->
+            if (!(skipWhitespace && line.isEmpty())) {
+                yield(line)
+            }
+        }
+    }
+}

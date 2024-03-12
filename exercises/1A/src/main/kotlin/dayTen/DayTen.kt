@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.fold
 import kotlin.io.path.Path
 import arrow.core.raise.Raise
 import arrow.core.raise.either
+import arrow.core.raise.recover
+import flows.linesSeq
 
 const val debug = false
 const val tickBoom = false
@@ -153,9 +155,9 @@ suspend fun dayTen() {
     val path = Path("inputFiles/dayTen.txt")
     lines(path)
         .parMap {
-            either { parseCustomErrorWithRaise(it) }
+            parseCustomErrorWithRaise(it)
         }
-        .fold(ExecutionState()) { acc, eitherOp: Either<LogicalError, Operations> ->
+        .fold(ExecutionState()) { acc, op ->
             println("op is $eitherOp")
             when (eitherOp) {
                 is Either.Right -> when (val op = eitherOp.value) {
@@ -174,6 +176,37 @@ suspend fun dayTen() {
     //                    acc
     //                }
 
+}
+
+context (Raise<LogicalError>)
+fun dayTenSequence(): ExecutionState {
+    val path = Path("inputFiles/dayTen.txt")
+
+    return linesSeq(path)
+        .map {
+            when (val r = operationsParser.parse(it)) {
+                is ParserResult.Ok -> Either.Right(r.result)
+                is ParserResult.Error -> Either.Left(ParseError("Unable to parse. $r "))
+            }.bind()
+        }
+        .fold(ExecutionState()) { acc, op ->
+            println("op is $op")
+            when (op) {
+                is Noop -> noop(acc)
+                is AddX -> addX(acc, op)
+            }
+        }
+}
+
+fun main() {
+    recover({
+        dayTenSequence()
+            .also { r ->
+                println(displayScreen(r.screen))
+            }
+    }) {
+        println("TODO: handle the error: $it")
+    }
 }
 
 
