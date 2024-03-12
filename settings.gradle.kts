@@ -3,6 +3,7 @@ plugins {
 }
 rootProject.name = "reactive-kotlinx-workshop"
 
+include("exercises:1")
 include("exercises:1A")
 //include("exercises:1B")
 

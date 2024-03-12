@@ -1,0 +1,13 @@
+addx 2
+addx 3
+noop
+noop
+addx 1
+addx 5
+addx -1
+addxd5
+addx 1
+noo234
+noop
+addx 4
+
