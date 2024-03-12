@@ -1,11 +1,13 @@
 
 
-fun <T> compress(list: List<T>) =
-    list.fold(emptyList<T>()) {
+fun <T> compress(list: List<T>): T {
+    return list.fold(list.first()) { acc, element ->
         TODO("Not implemented yet")
     }
+}
 
 fun main() {
+    println("Hello world!")
 
     val li = listOf('a','a','a','a','b','c','c','a','a','d','e','e','e','e')
     println(compress(li))
